@@ -8,7 +8,7 @@ import {
 } from "../../lib/reducers/incomes-reducer";
 import { deleteIncome, getAllIncomes, updateIncome } from "../../lib/API";
 import Card from "../../components/card";
-import { Box, grid, VStack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 type IncomeArrayProps = {
   income: number;
@@ -42,9 +42,9 @@ export default function Incomes() {
     const income = parseInt(target.income.value);
     const type = target.select.value;
     if (income && type && incomeId) {
-      const result = await updateIncome(token, income, type, incomeId);
+      const result = await updateIncome(token.token, income, type, incomeId);
       if (result.updatedIncome === true) {
-        const allIncomes = await getAllIncomes(token);
+        const allIncomes = await getAllIncomes(token.token);
         allIncomes && dispatch(setAllIncomes(allIncomes));
         alert("Su ingreso ha sido actualizado con éxito");
       } else {
@@ -55,9 +55,9 @@ export default function Incomes() {
 
   async function removeIncome(incomeId: string) {
     if (incomeId) {
-      const result = await deleteIncome(token, incomeId);
+      const result = await deleteIncome(token.token, incomeId);
       if (result.deletedIncome === true) {
-        const allIncomes = await getAllIncomes(token);
+        const allIncomes = await getAllIncomes(token.token);
         allIncomes && dispatch(setAllIncomes(allIncomes));
         alert("Su ingreso ha sido elminado con éxito");
       } else {

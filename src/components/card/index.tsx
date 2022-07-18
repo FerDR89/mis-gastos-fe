@@ -101,6 +101,7 @@ export default function Card({
           justifyContent="center"
           w={"50px"}
           h={"40px"}
+          cursor={"pointer"}
           onClick={() => {
             onClicked(id);
           }}

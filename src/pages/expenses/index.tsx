@@ -49,9 +49,9 @@ export default function Expenses() {
     const expense = parseInt(target.expense.value);
     const type = target.select.value;
     if (expense && type && expenseId) {
-      const result = await updateExpense(token, expense, type, expenseId);
+      const result = await updateExpense(token.token, expense, type, expenseId);
       if (result.updatedExpense === true) {
-        const allExpenses = await getAllExpenses(token);
+        const allExpenses = await getAllExpenses(token.token);
         allExpenses && dispatch(setAllExpenses(allExpenses));
         alert("Su egreso ha sido actualizado con éxito");
       } else {
@@ -62,9 +62,9 @@ export default function Expenses() {
 
   async function removeExpense(expenseId: string) {
     if (expenseId) {
-      const result = await deleteExpense(token, expenseId);
+      const result = await deleteExpense(token.token, expenseId);
       if (result.deletedExpense === true) {
-        const allExpenses = await getAllExpenses(token);
+        const allExpenses = await getAllExpenses(token.token);
         allExpenses && dispatch(setAllExpenses(allExpenses));
         alert("Su egreso ha sido elminado con éxito");
       } else {

@@ -23,9 +23,7 @@ import ModalHome from "../../components/modalHome";
 export default function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const token = useSelector(selectUserToken);
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxem9xSDRDeEtHTk5aQmRSY3BBeCIsImlhdCI6MTY1ODEwNjgyOH0.QzWS9h2Dhq3ATZkIuElDMbLQy8IeFXZJ80-35FNTEZU";
+  const token = useSelector(selectUserToken);
   const incomes = useSelector(selectAllIncomes);
   const expenses = useSelector(selectAllExpenses);
 
@@ -54,29 +52,33 @@ export default function Home() {
     if (!token) {
       navigate("/");
     }
-    getIncomes(token);
-    getExpenses(token);
+    getIncomes(token.token);
+    getExpenses(token.token);
   }, [token]);
 
-  //Suman todos los incomes/expense recibidos para luego poder renderizarlos en el gráfico y los "cuadraditos"
-  const sumAllIncomes = incomes.reduce(
-    (acc: number, income: { income: number }) => acc + income.income,
-    0
-  );
+  // //Suman todos los incomes/expense recibidos para luego poder renderizarlos en el gráfico y los "cuadraditos"
+  const sumAllIncomes = incomes
+    ? incomes.reduce(
+        (acc: number, income: { income: number }) => acc + income.income,
+        0
+      )
+    : 0;
 
-  const sumAllExpenses = expenses.reduce(
-    (acc: number, expense: { expense: number }) => acc + expense.expense,
-    0
-  );
+  const sumAllExpenses = expenses
+    ? expenses.reduce(
+        (acc: number, expense: { expense: number }) => acc + expense.expense,
+        0
+      )
+    : 0;
 
   async function submitIncome(e: any) {
     e.preventDefault();
     const income = parseInt(e.target.income.value);
     const type = e.target.select.value;
     if (income && type) {
-      const result = await createIncome(token, income, type);
+      const result = await createIncome(token.token, income, type);
       if (result.createdIncome === true) {
-        getIncomes(token);
+        getIncomes(token.token);
         alert("Su ingreso ha sido creado con éxito");
       } else {
         alert(result.message);
@@ -89,9 +91,9 @@ export default function Home() {
     const expense = parseInt(e.target.expense.value);
     const type = e.target.select.value;
     if (expense && type) {
-      const result = await createExpense(token, expense, type);
+      const result = await createExpense(token.token, expense, type);
       if (result.createdExpense === true) {
-        getExpenses(token);
+        getExpenses(token.token);
         alert("Su gasto fue creado con éxito");
       } else {
         alert(result.message);
@@ -99,7 +101,7 @@ export default function Home() {
     }
   }
 
-  return incomes && expenses ? (
+  return token ? (
     <Flex
       w={"100%"}
       h={["calc(80vh - 20px)", "600px"]}

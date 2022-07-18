@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectUserEmail,
   selectUserToken,
+  setEmail,
   setToken,
 } from "../../lib/reducers/user-reducer";
 import {
@@ -15,6 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { setAllIncomes } from "../../lib/reducers/incomes-reducer";
+import { setAllExpenses } from "../../lib/reducers/expenses-reducer";
 
 export default function MyMenu() {
   const token: string = useSelector(selectUserToken);
@@ -43,7 +46,7 @@ export default function MyMenu() {
         />
       </MenuButton>
       <MenuList
-        w={["345px", "200px"]}
+        w={"345px"}
         minH={"calc(80vh - 20px)"}
         display="flex"
         flexDir="column"
@@ -77,9 +80,10 @@ export default function MyMenu() {
         </MenuGroup>
         <MenuGroup>
           <Text
-            fontFamily={"Orbitron, sans-serif"}
+            fontFamily={"Montserrat, sans-serif"}
             textAlign="center"
             fontSize={["1em", "1.3em"]}
+            fontWeight={500}
           >
             {userEmail && userEmail}
           </Text>
@@ -89,7 +93,10 @@ export default function MyMenu() {
             fontSize={["1em", "1.3em"]}
             color={"purple.500"}
             onClick={() => {
+              dispatch(setEmail(""));
               dispatch(setToken(""));
+              dispatch(setAllIncomes([]));
+              dispatch(setAllExpenses([]));
               navigate("/");
             }}
           >
