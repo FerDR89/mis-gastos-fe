@@ -1,0 +1,17 @@
+.form {
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.select:focus {
+  width: 240px;
+}
+
+@media (min-width: 400px) {
+  .select:focus {
+    width: 350px;
+  }
+}
